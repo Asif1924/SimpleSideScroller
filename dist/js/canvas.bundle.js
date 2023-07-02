@@ -289,7 +289,17 @@ var Player = /*#__PURE__*/function () {
   _createClass(Player, [{
     key: "draw",
     value: function draw() {
-      canvasCtx.drawImage(this.currentSprite, this.currentCropWidth * this.frames, 0, this.currentCropWidth, 400, this.position.x, this.position.y, this.width, this.height);
+      canvasCtx.drawImage(
+      // this.currentSprite, 
+      // this.currentCropWidth * this.frames,
+      // 0,
+      // this.currentCropWidth,
+      // 400,
+      // this.position.x, 
+      // this.position.y,
+      // this.width,
+      // this.height
+      this.currentSprite, 0, 0, 177, 400, this.position.x, this.position.y, this.width, this.height);
     }
   }, {
     key: "update",
