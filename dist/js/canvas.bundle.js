@@ -238,6 +238,8 @@ var canvas = document.querySelector("canvas");
 var canvasCtx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
+var JUMPVELOCITY = 10;
+var PLAYERSPEED = 5;
 
 // Define your game variables here
 function createImage(imageSrc) {
@@ -256,7 +258,7 @@ var spriteRunLeftImage = createImage(_img_spriteRunLeft_png__WEBPACK_IMPORTED_MO
 var Player = /*#__PURE__*/function () {
   function Player() {
     _classCallCheck(this, Player);
-    this.speed = 10;
+    this.speed = PLAYERSPEED;
     this.position = {
       x: 100,
       y: 100
@@ -520,7 +522,7 @@ addEventListener("keydown", function (_ref3) {
       break;
     case 32:
       console.log("jump");
-      player.velocity.y -= 15;
+      player.velocity.y -= JUMPVELOCITY;
       break;
   }
 });

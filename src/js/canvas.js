@@ -14,6 +14,10 @@ const canvasCtx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 
+const JUMPVELOCITY = 10;
+const PLAYERSPEED = 5;
+
+
 // Define your game variables here
 function createImage(imageSrc) {
   const image = new Image();
@@ -32,7 +36,7 @@ let spriteRunLeftImage = createImage(spriteRunLeft);
 
 class Player {
   constructor() {
-    this.speed = 10;
+    this.speed = PLAYERSPEED;
     this.position = {
       x: 100,
       y: 100,
@@ -318,7 +322,7 @@ addEventListener("keydown", ({ keyCode }) => {
       break;
     case 32:
       console.log("jump");
-      player.velocity.y -= 15;
+      player.velocity.y -= JUMPVELOCITY;
       break;
   }
 });
