@@ -238,11 +238,21 @@ var canvas = document.querySelector("canvas");
 var canvasCtx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
-var JUMPVELOCITY = 15;
-var PLAYERSPEED = 5;
+
+//Controls
+var SHIFT = 16;
+var CTRL = 17;
+var ALT = 18;
+var WINDOWS_OPTION = 91;
 var LEFTARROW = 37;
 var RIGHTARROW = 39;
 var SPACEBAR = 32;
+
+//Environmental
+var INITIAL_JUMPVELOCITY = 15;
+var INITIAL_PLAYERSPEED = 5;
+var JUMPVELOCITY = INITIAL_JUMPVELOCITY;
+var PLAYERSPEED = INITIAL_PLAYERSPEED;
 var BACKGROUND_HILLS_PARALLAX_FACTOR = 0.66;
 var hitSpaceCount = 0;
 
@@ -366,7 +376,7 @@ var platformImageSmallTall = createImage(_img_platformSmallTall_png__WEBPACK_IMP
 var player = new Player();
 var platforms = [];
 var genericObjects = [];
-var lastKey = '';
+var lastKey = "";
 var keys = {
   right: {
     pressed: false
@@ -473,20 +483,20 @@ function gameLoop() {
   });
 
   //Sprite switching conditional
-  if (keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
+  if (keys.right.pressed && lastKey === "right" && player.currentSprite !== player.sprites.run.right) {
     player.frames = 1;
     player.currentSprite = player.sprites.run.right;
     player.currentCropWidth = player.sprites.run.cropWidth;
     player.width = player.sprites.run.width;
-  } else if (keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
+  } else if (keys.left.pressed && lastKey === "left" && player.currentSprite !== player.sprites.run.left) {
     player.currentSprite = player.sprites.run.left;
     player.currentCropWidth = player.sprites.run.cropWidth;
     player.width = player.sprites.run.width;
-  } else if (!keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.stand.left) {
+  } else if (!keys.left.pressed && lastKey === "left" && player.currentSprite !== player.sprites.stand.left) {
     player.currentSprite = player.sprites.stand.left;
     player.currentCropWidth = player.sprites.stand.cropWidth;
     player.width = player.sprites.stand.width;
-  } else if (!keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.stand.right) {
+  } else if (!keys.right.pressed && lastKey === "right" && player.currentSprite !== player.sprites.stand.right) {
     player.currentSprite = player.sprites.stand.right;
     player.currentCropWidth = player.sprites.stand.cropWidth;
     player.width = player.sprites.stand.width;
@@ -505,21 +515,34 @@ init();
 gameLoop();
 addEventListener("keydown", function (_ref3) {
   var keyCode = _ref3.keyCode;
+  console.log(keyCode);
   switch (keyCode) {
     case LEFTARROW:
       console.log("left");
       keys.left.pressed = true;
-      lastKey = 'left';
+      lastKey = "left";
       break;
     case RIGHTARROW:
       console.log("right");
       keys.right.pressed = true;
-      lastKey = 'right';
+      lastKey = "right";
       break;
     case SPACEBAR:
       console.log("jump");
       hitSpaceCount++;
       if (hitSpaceCount == 1) player.velocity.y -= JUMPVELOCITY;
+      break;
+    case SHIFT:
+      console.log("shift");
+      JUMPVELOCITY *= 1.3;
+      PLAYERSPEED *= 2.5;
+      player.speed = PLAYERSPEED;
+      break;
+    case CTRL:
+      console.log("ctrl");
+      break;
+    case ALT:
+      console.log("alt");
       break;
   }
 });
@@ -536,6 +559,18 @@ addEventListener("keyup", function (_ref4) {
       break;
     case SPACEBAR:
       console.log("jump");
+      break;
+    case SHIFT:
+      console.log("shift");
+      JUMPVELOCITY = INITIAL_JUMPVELOCITY;
+      PLAYERSPEED = INITIAL_PLAYERSPEED;
+      player.speed = PLAYERSPEED;
+      break;
+    case CTRL:
+      console.log("ctrl");
+      break;
+    case ALT:
+      console.log("alt");
       break;
   }
 });
