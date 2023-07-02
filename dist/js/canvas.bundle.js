@@ -240,9 +240,19 @@ canvas.width = 1024;
 canvas.height = 576;
 
 // Define your game variables here
-
+function createImage(imageSrc) {
+  var image = new Image();
+  image.src = imageSrc;
+  return image;
+}
 // Player object
 var gravity = 0.5;
+var spriteStandRightImage = createImage(_img_spriteStandRight_png__WEBPACK_IMPORTED_MODULE_7__["default"]);
+var spriteStandLeftImage = createImage(_img_spriteStandLeft_png__WEBPACK_IMPORTED_MODULE_6__["default"]);
+var spriteRunRightImage = createImage(_img_spriteRunRight_png__WEBPACK_IMPORTED_MODULE_5__["default"]);
+var spriteRunLeftImage = createImage(_img_spriteRunLeft_png__WEBPACK_IMPORTED_MODULE_4__["default"]);
+
+//let spriteStandRightImage = createImage(spriteStandRight);
 var Player = /*#__PURE__*/function () {
   function Player() {
     _classCallCheck(this, Player);
@@ -255,18 +265,41 @@ var Player = /*#__PURE__*/function () {
       x: 0,
       y: 1
     };
-    this.width = 30;
-    this.height = 30;
+    this.width = 66;
+    this.height = 150;
+    this.image = spriteStandRightImage;
+    this.frames = 0;
+    this.sprites = {
+      stand: {
+        right: spriteStandRightImage,
+        left: spriteStandLeftImage,
+        cropWidth: 177,
+        width: 66
+      },
+      run: {
+        right: spriteRunRightImage,
+        left: spriteRunLeftImage,
+        cropWidth: 341,
+        width: 127.875
+      }
+    };
+    this.currentSprite = this.sprites.stand.right;
+    this.currenCropWidth = 177;
   }
   _createClass(Player, [{
     key: "draw",
     value: function draw() {
-      canvasCtx.fillStyle = "red";
-      canvasCtx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      canvasCtx.drawImage(this.currentSprite, this.currentCropWidth * this.frames, 0, this.currentCropWidth, 400, this.position.x, this.position.y, this.width, this.height);
     }
   }, {
     key: "update",
     value: function update() {
+      this.frames++;
+      if (this.frames > 59 && (this.currentSprite === this.sprites.stand.right || this.currentSprite === this.sprites.stand.left)) {
+        this.frames = 0;
+      } else if (this.frames > 29 && (this.currentSprite === this.sprites.run.right || this.currentSprite === this.sprites.run.left)) {
+        this.frames = 0;
+      }
       this.draw();
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y;
@@ -321,16 +354,12 @@ var GenericObject = /*#__PURE__*/function () {
   }]);
   return GenericObject;
 }();
-function createImage(imageSrc) {
-  var image = new Image();
-  image.src = imageSrc;
-  return image;
-}
 var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var platformImageSmallTall = createImage(_img_platformSmallTall_png__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var player = new Player();
 var platforms = [];
 var genericObjects = [];
+var lastKey = '';
 var keys = {
   right: {
     pressed: false
@@ -434,6 +463,26 @@ function gameLoop() {
       player.velocity.y = 0;
     }
   });
+
+  //Sprite switching conditional
+  if (keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
+    player.frames = 1;
+    player.currentSprite = player.sprites.run.right;
+    player.currenCropWidth = player.sprites.run.cropWidth;
+    player.width = player.sprites.run.width;
+  } else if (keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
+    player.currentSprite = player.sprites.run.left;
+    player.currenCropWidth = player.sprites.run.cropWidth;
+    player.width = player.sprites.run.width;
+  } else if (!keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
+    player.currentSprite = player.sprites.stand.left;
+    player.currenCropWidth = player.sprites.stand.cropWidth;
+    player.width = player.sprites.stand.width;
+  } else if (!keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
+    player.currentSprite = player.sprites.stand.right;
+    player.currenCropWidth = player.sprites.stand.cropWidth;
+    player.width = player.sprites.stand.width;
+  }
   if (scrollOffset > platformImage.width * 5 + 300 - 2) {
     console.log("Winner");
   }
@@ -452,10 +501,12 @@ addEventListener("keydown", function (_ref3) {
     case 37:
       console.log("left");
       keys.left.pressed = true;
+      lastKey = 'left';
       break;
     case 39:
       console.log("right");
       keys.right.pressed = true;
+      lastKey = 'right';
       break;
     case 32:
       console.log("jump");

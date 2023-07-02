@@ -15,9 +15,20 @@ canvas.width = 1024;
 canvas.height = 576;
 
 // Define your game variables here
-
+function createImage(imageSrc) {
+  const image = new Image();
+  image.src = imageSrc;
+  return image;
+}
 // Player object
 let gravity = 0.5;
+
+let spriteStandRightImage = createImage(spriteStandRight);
+let spriteStandLeftImage = createImage(spriteStandLeft);
+let spriteRunRightImage = createImage(spriteRunRight);
+let spriteRunLeftImage = createImage(spriteRunLeft);
+
+//let spriteStandRightImage = createImage(spriteStandRight);
 
 class Player {
   constructor() {
@@ -30,21 +41,51 @@ class Player {
       x: 0,
       y: 1,
     };
-    this.width = 30;
-    this.height = 30;
+    this.width = 66;
+    this.height = 150;
+    this.image = spriteStandRightImage;
+    this.frames = 0;
+    this.sprites ={
+      stand:{
+        right: spriteStandRightImage,
+        left: spriteStandLeftImage,
+        cropWidth: 177,
+        width: 66
+      },
+      run:{
+        right: spriteRunRightImage,
+        left: spriteRunLeftImage,
+        cropWidth: 341,
+        width: 127.875
+      }
+    }
+    this.currentSprite = this.sprites.stand.right;
+    this.currenCropWidth = 177;
   }
 
   draw() {
-    canvasCtx.fillStyle = "red";
-    canvasCtx.fillRect(
-      this.position.x,
+    canvasCtx.drawImage( 
+      this.currentSprite, 
+      this.currentCropWidth * this.frames,
+      0,
+      this.currentCropWidth,
+      400,
+      this.position.x, 
       this.position.y,
       this.width,
       this.height
     );
+
   }
 
   update() {
+    this.frames++;
+    if(this.frames> 59 && (this.currentSprite===this.sprites.stand.right || this.currentSprite===this.sprites.stand.left) ){
+      this.frames = 0;
+    } 
+    else if(this.frames>29 && (this.currentSprite===this.sprites.run.right || this.currentSprite===this.sprites.run.left) ){
+      this.frames = 0;
+    }
     this.draw();
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -83,18 +124,12 @@ class GenericObject {
   }
 }
 
-function createImage(imageSrc) {
-  const image = new Image();
-  image.src = imageSrc;
-  return image;
-}
-
 let platformImage = createImage(platformImageSrc);
 let platformImageSmallTall = createImage(platformImageSmallTallSrc);
 let player = new Player();
 let platforms = [];
 let genericObjects = [];
-
+let lastKey = '';
 let keys = {
   right: {
     pressed: false,
@@ -186,6 +221,7 @@ function gameLoop() {
   platforms.forEach((platform) => {
     platform.draw();
   });
+
   player.update();
 
   if (keys.right.pressed && player.position.x < 400) {
@@ -225,6 +261,26 @@ function gameLoop() {
     }
   });
 
+  //Sprite switching conditional
+  if( keys.right.pressed && lastKey==='right' && player.currentSprite !== player.sprites.run.right){
+    player.frames = 1;
+    player.currentSprite = player.sprites.run.right;
+    player.currenCropWidth=player.sprites.run.cropWidth;
+    player.width=player.sprites.run.width;    
+  }else if( keys.left.pressed && lastKey==='left' && player.currentSprite!==player.sprites.run.left){
+    player.currentSprite=player.sprites.run.left;
+    player.currenCropWidth=player.sprites.run.cropWidth;
+    player.width=player.sprites.run.width;  
+  }else if( !keys.left.pressed && lastKey==='left' && player.currentSprite!==player.sprites.run.left){
+    player.currentSprite=player.sprites.stand.left;
+    player.currenCropWidth=player.sprites.stand.cropWidth;
+    player.width=player.sprites.stand.width;  
+  }else if( !keys.right.pressed && lastKey==='right' && player.currentSprite!==player.sprites.run.right){
+    player.currentSprite=player.sprites.stand.right;
+    player.currenCropWidth=player.sprites.stand.cropWidth;
+    player.width=player.sprites.stand.width;  
+  }
+
   if (scrollOffset > platformImage.width * 5 + 300 -2) {
     console.log("Winner");
   }
@@ -244,10 +300,12 @@ addEventListener("keydown", ({ keyCode }) => {
     case 37:
       console.log("left");
       keys.left.pressed = true;
+      lastKey='left';
       break;
     case 39:
       console.log("right");
       keys.right.pressed = true;
+      lastKey = 'right';
       break;
     case 32:
       console.log("jump");
@@ -264,7 +322,7 @@ addEventListener("keyup", ({ keyCode }) => {
       break;
     case 39:
       console.log("right");
-      keys.right.pressed = false;
+      keys.right.pressed = false;     
       break;
     case 32:
       console.log("jump");      
