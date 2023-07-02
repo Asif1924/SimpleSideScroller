@@ -1,11 +1,11 @@
-import platformImageSrc from '../img/platform.png';
-import hills from '../img/hills.png';
-import background from '../img/background.png';
+import platformImageSrc from "../img/platform.png";
+import hills from "../img/hills.png";
+import background from "../img/background.png";
 
 const canvas = document.querySelector("canvas");
 const canvasCtx = canvas.getContext("2d");
 canvas.width = 1024;
-canvas.height = 576; 
+canvas.height = 576;
 
 // Define your game variables here
 
@@ -41,9 +41,9 @@ class Player {
     this.draw();
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    if (this.position.y + this.height + this.velocity.y <= canvas.height)
+    if (this.position.y + this.height + this.velocity.y <= canvas.height) {
       this.velocity.y += gravity;
-    //else this.velocity.y = 0;
+    }
   }
 }
 
@@ -55,10 +55,10 @@ class Platform {
     };
     this.image = image;
     this.width = image.width;
-    this.height = image.height;    
+    this.height = image.height;
   }
-  draw() { 
-    canvasCtx.drawImage(this.image,this.position.x,this.position.y);
+  draw() {
+    canvasCtx.drawImage(this.image, this.position.x, this.position.y);
   }
 }
 class GenericObject {
@@ -69,55 +69,52 @@ class GenericObject {
     };
     this.image = image;
     this.width = image.width;
-    this.height = image.height;       
+    this.height = image.height;
   }
-  draw() { 
-    canvasCtx.drawImage(this.image,this.position.x,this.position.y);
+  draw() {
+    canvasCtx.drawImage(this.image, this.position.x, this.position.y);
   }
 }
 
-function createImage( imageSrc ){
+function createImage(imageSrc) {
   const image = new Image();
   image.src = imageSrc;
-  return image;  
+  return image;
 }
 
 let platformImage = createImage(platformImageSrc);
-// Load player image
 let player = new Player();
 let platforms = [
-  new Platform({ 
-    x: -1, 
-    y: 470, 
-    image:platformImage
+  new Platform({
+    x: -1,
+    y: 470,
+    image: platformImage,
   }),
-  new Platform({ 
-    x: platformImage.width-3, 
-    y: 470, 
-    image:platformImage 
+  new Platform({
+    x: platformImage.width - 3,
+    y: 470,
+    image: platformImage,
   }),
-  new Platform({ 
-    x: (platformImage.width * 2) + 100, 
-    y: 470, 
-    image:platformImage 
-  })
+  new Platform({
+    x: platformImage.width * 2 + 100,
+    y: 470,
+    image: platformImage,
+  }),
 ];
 
 let genericObjects = [
-  new GenericObject({ 
-    x:-1,
-    y:-1,
-    image:createImage(background)
+  new GenericObject({
+    x: -1,
+    y: -1,
+    image: createImage(background),
   }),
-  new GenericObject({ 
-    x:-1,
-    y:-1,
-    image:createImage(hills)
-  })
+  new GenericObject({
+    x: -1,
+    y: -1,
+    image: createImage(hills),
+  }),
 ];
 
-
-// Event listeners for keyboard controls
 let keys = {
   right: {
     pressed: false,
@@ -127,38 +124,46 @@ let keys = {
   },
 };
 
-function init(){
+function init() {
   platformImage = createImage(platformImageSrc);
   // Load player image
   player = new Player();
   platforms = [
-    new Platform({ 
-      x: -1, 
-      y: 470, 
-      image:platformImage}),
-    new Platform({ 
-      x: platformImage.width-3, 
-      y: 470, 
-      image:platformImage }),
-    new Platform({ 
-      x: (platformImage.width * 2) + 100 , 
-      y: 470, 
-      image:platformImage })
+    new Platform({
+      x: -1,
+      y: 470,
+      image: platformImage,
+    }),
+    new Platform({
+      x: platformImage.width - 3,
+      y: 470,
+      image: platformImage,
+    }),
+    new Platform({
+      x: platformImage.width * 2 + 100,
+      y: 470,
+      image: platformImage,
+    }),
+    new Platform({
+      x: platformImage.width * 3 + 100,
+      y: 470,
+      image: platformImage,
+    }),
   ];
-  
+
   genericObjects = [
-    new GenericObject({ 
-      x:-1,
-      y:-1,
-      image:createImage(background)}),
-    new GenericObject({ 
-      x:-1,
-      y:-1,
-      image:createImage(hills)})
+    new GenericObject({
+      x: -1,
+      y: -1,
+      image: createImage(background),
+    }),
+    new GenericObject({
+      x: -1,
+      y: -1,
+      image: createImage(hills),
+    }),
   ];
-  
-  
-  // Event listeners for keyboard controls
+
   keys = {
     right: {
       pressed: false,
@@ -166,7 +171,7 @@ function init(){
     left: {
       pressed: false,
     },
-  };  
+  };
 }
 
 addEventListener("keydown", ({ keyCode }) => {
@@ -198,7 +203,7 @@ addEventListener("keyup", ({ keyCode }) => {
       break;
     case 32:
       console.log("jump");
-      player.velocity.y -= 10;
+      player.velocity.y -= 6;
       break;
   }
 });
@@ -207,20 +212,20 @@ let scrollOffset = 0;
 // Game loop function
 function gameLoop() {
   requestAnimationFrame(gameLoop);
-  canvasCtx.fillStyle='white';
+  canvasCtx.fillStyle = "white";
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
- 
-  genericObjects.forEach((genericObject)=>{
+
+  genericObjects.forEach((genericObject) => {
     genericObject.draw();
-  })
+  });
 
   platforms.forEach((platform) => {
     platform.draw();
   });
-  player.update();  
+  player.update();
 
   if (keys.right.pressed && player.position.x < 400) {
-    player.velocity.x = player.speed
+    player.velocity.x = player.speed;
   } else if (keys.left.pressed && player.position.x > 100) {
     player.velocity.x = -player.speed;
   } else {
@@ -230,17 +235,17 @@ function gameLoop() {
       platforms.forEach((platform) => {
         platform.position.x -= player.speed;
       });
-      genericObjects.forEach((genericObject)=>{
-        genericObject.position.x-=player.speed * 0.66;
-      })
+      genericObjects.forEach((genericObject) => {
+        genericObject.position.x -= player.speed * 0.66;
+      });
     } else if (keys.left.pressed) {
       scrollOffset -= 5;
       platforms.forEach((platform) => {
         platform.position.x += player.speed;
       });
-      genericObjects.forEach((genericObject)=>{
-        genericObject.position.x+=player.speed * 0.66;
-      })      
+      genericObjects.forEach((genericObject) => {
+        genericObject.position.x += player.speed * 0.66;
+      });
     }
   }
 
@@ -256,18 +261,16 @@ function gameLoop() {
     }
   });
 
-  if(scrollOffset>2000){
+  if (scrollOffset > 2000) {
     console.log("Winner");
   }
 
-  if(player.position.y>canvas.height){
+  if (player.position.y > canvas.height) {
     console.log("Loser");
     init();
   }
-
-  //update();
-  //render();
 }
 
 // Start the game loop
+init();
 gameLoop();

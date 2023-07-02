@@ -183,7 +183,10 @@ var Player = /*#__PURE__*/function () {
       this.draw();
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y;
-      if (this.position.y + this.height + this.velocity.y <= canvas.height) this.velocity.y += gravity; //else this.velocity.y = 0;
+
+      if (this.position.y + this.height + this.velocity.y <= canvas.height) {
+        this.velocity.y += gravity;
+      }
     }
   }]);
 
@@ -250,8 +253,7 @@ function createImage(imageSrc) {
   return image;
 }
 
-var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]); // Load player image
-
+var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var player = new Player();
 var platforms = [new Platform({
   x: -1,
@@ -274,8 +276,7 @@ var genericObjects = [new GenericObject({
   x: -1,
   y: -1,
   image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
-})]; // Event listeners for keyboard controls
-
+})];
 var keys = {
   right: {
     pressed: false
@@ -301,6 +302,10 @@ function init() {
     x: platformImage.width * 2 + 100,
     y: 470,
     image: platformImage
+  }), new Platform({
+    x: platformImage.width * 3 + 100,
+    y: 470,
+    image: platformImage
   })];
   genericObjects = [new GenericObject({
     x: -1,
@@ -310,8 +315,7 @@ function init() {
     x: -1,
     y: -1,
     image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
-  })]; // Event listeners for keyboard controls
-
+  })];
   keys = {
     right: {
       pressed: false
@@ -358,7 +362,7 @@ addEventListener("keyup", function (_ref4) {
 
     case 32:
       console.log("jump");
-      player.velocity.y -= 10;
+      player.velocity.y -= 6;
       break;
   }
 });
@@ -366,7 +370,7 @@ var scrollOffset = 0; // Game loop function
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
-  canvasCtx.fillStyle = 'white';
+  canvasCtx.fillStyle = "white";
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
   genericObjects.forEach(function (genericObject) {
     genericObject.draw();
@@ -415,12 +419,11 @@ function gameLoop() {
   if (player.position.y > canvas.height) {
     console.log("Loser");
     init();
-  } //update();
-  //render();
-
+  }
 } // Start the game loop
 
 
+init();
 gameLoop();
 
 /***/ })
