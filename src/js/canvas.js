@@ -54,16 +54,9 @@ class Platform {
     };
     this.image = image;
     this.width = image.width;
-    this.height = image.height;
-    
+    this.height = image.height;    
   }
   draw() { 
-    // canvasCtx.fillStyle = "blue";
-    // canvasCtx.fillRect(
-    //   this.position.x,
-    //   this.position.y,
-    //   this.width,
-    //   this.height
     canvasCtx.drawImage(this.image,this.position.x,this.position.y);
   }
 }
@@ -76,16 +69,9 @@ class GenericObject {
     };
     this.image = image;
     this.width = image.width;
-    this.height = image.height;
-    
+    this.height = image.height;       
   }
   draw() { 
-    // canvasCtx.fillStyle = "blue";
-    // canvasCtx.fillRect(
-    //   this.position.x,
-    //   this.position.y,
-    //   this.width,
-    //   this.height
     canvasCtx.drawImage(this.image,this.position.x,this.position.y);
   }
 }

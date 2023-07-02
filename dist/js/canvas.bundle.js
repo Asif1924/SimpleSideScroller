@@ -209,12 +209,6 @@ var Platform = /*#__PURE__*/function () {
   _createClass(Platform, [{
     key: "draw",
     value: function draw() {
-      // canvasCtx.fillStyle = "blue";
-      // canvasCtx.fillRect(
-      //   this.position.x,
-      //   this.position.y,
-      //   this.width,
-      //   this.height
       canvasCtx.drawImage(this.image, this.position.x, this.position.y);
     }
   }]);
@@ -242,12 +236,6 @@ var GenericObject = /*#__PURE__*/function () {
   _createClass(GenericObject, [{
     key: "draw",
     value: function draw() {
-      // canvasCtx.fillStyle = "blue";
-      // canvasCtx.fillRect(
-      //   this.position.x,
-      //   this.position.y,
-      //   this.width,
-      //   this.height
       canvasCtx.drawImage(this.image, this.position.x, this.position.y);
     }
   }]);
