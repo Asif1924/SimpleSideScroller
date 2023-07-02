@@ -95,6 +95,8 @@ let keys = {
   },
 };
 
+let scrollOffset = 0;
+
 function init() {
   platformImage = createImage(platformImageSrc);
   // Load player image
@@ -111,15 +113,21 @@ function init() {
       image: platformImage,
     }),
     new Platform({
-      x: platformImage.width * 2 + 100,
+      x: (platformImage.width * 2) + 100,
       y: 470,
       image: platformImage,
     }),
     new Platform({
-      x: platformImage.width * 3 + 100,
+      x: (platformImage.width * 3) + 300,
       y: 470,
       image: platformImage,
     }),
+    new Platform({
+      x: (platformImage.width * 4) + 600,
+      y: 470,
+      image: platformImage,
+    }),
+
   ];
 
   genericObjects = [
@@ -145,7 +153,7 @@ function init() {
   };
 }
 
-let scrollOffset = 0;
+
 // Game loop function
 function gameLoop() {
   requestAnimationFrame(gameLoop);
@@ -224,7 +232,7 @@ addEventListener("keydown", ({ keyCode }) => {
       break;
     case 32:
       console.log("jump");
-      player.velocity.y -= 6;
+      player.velocity.y -= 10;
       break;
   }
 });
@@ -240,8 +248,7 @@ addEventListener("keyup", ({ keyCode }) => {
       keys.right.pressed = false;
       break;
     case 32:
-      console.log("jump");
-      player.velocity.y -= 6;
+      console.log("jump");      
       break;
   }
 });
