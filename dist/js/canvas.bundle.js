@@ -158,6 +158,7 @@ var Player = /*#__PURE__*/function () {
   function Player() {
     _classCallCheck(this, Player);
 
+    this.speed = 10;
     this.position = {
       x: 100,
       y: 100
@@ -182,7 +183,7 @@ var Player = /*#__PURE__*/function () {
       this.draw();
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y;
-      if (this.position.y + this.height + this.velocity.y <= canvas.height) this.velocity.y += gravity;else this.velocity.y = 0;
+      if (this.position.y + this.height + this.velocity.y <= canvas.height) this.velocity.y += gravity; //else this.velocity.y = 0;
     }
   }]);
 
@@ -251,6 +252,7 @@ function createImage(imageSrc) {
 
 var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]); // Load player image
 
+var player = new Player();
 var platforms = [new Platform({
   x: -1,
   y: 470,
@@ -260,7 +262,7 @@ var platforms = [new Platform({
   y: 470,
   image: platformImage
 }), new Platform({
-  x: platformImage.width * 2 - 3,
+  x: platformImage.width * 2 + 100,
   y: 470,
   image: platformImage
 })];
@@ -272,10 +274,7 @@ var genericObjects = [new GenericObject({
   x: -1,
   y: -1,
   image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
-})]; //playerImage.src = "mario-right.jpeg"; // Replace "player.png" with your image file
-
-var player = new Player(); //player.draw();
-// Event listeners for keyboard controls
+})]; // Event listeners for keyboard controls
 
 var keys = {
   right: {
@@ -285,6 +284,44 @@ var keys = {
     pressed: false
   }
 };
+
+function init() {
+  platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]); // Load player image
+
+  player = new Player();
+  platforms = [new Platform({
+    x: -1,
+    y: 470,
+    image: platformImage
+  }), new Platform({
+    x: platformImage.width - 3,
+    y: 470,
+    image: platformImage
+  }), new Platform({
+    x: platformImage.width * 2 + 100,
+    y: 470,
+    image: platformImage
+  })];
+  genericObjects = [new GenericObject({
+    x: -1,
+    y: -1,
+    image: createImage(_img_background_png__WEBPACK_IMPORTED_MODULE_2__["default"])
+  }), new GenericObject({
+    x: -1,
+    y: -1,
+    image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
+  })]; // Event listeners for keyboard controls
+
+  keys = {
+    right: {
+      pressed: false
+    },
+    left: {
+      pressed: false
+    }
+  };
+}
+
 addEventListener("keydown", function (_ref3) {
   var keyCode = _ref3.keyCode;
 
@@ -301,7 +338,7 @@ addEventListener("keydown", function (_ref3) {
 
     case 32:
       console.log("jump");
-      player.velocity.y -= 10;
+      player.velocity.y -= 6;
       break;
   }
 });
@@ -340,27 +377,27 @@ function gameLoop() {
   player.update();
 
   if (keys.right.pressed && player.position.x < 400) {
-    player.velocity.x = 5;
+    player.velocity.x = player.speed;
   } else if (keys.left.pressed && player.position.x > 100) {
-    player.velocity.x = -5;
+    player.velocity.x = -player.speed;
   } else {
     player.velocity.x = 0;
 
     if (keys.right.pressed) {
-      scrollOffset += 5;
+      scrollOffset += player.speed;
       platforms.forEach(function (platform) {
-        platform.position.x -= 5;
+        platform.position.x -= player.speed;
       });
       genericObjects.forEach(function (genericObject) {
-        genericObject.position.x -= 3;
+        genericObject.position.x -= player.speed * 0.66;
       });
     } else if (keys.left.pressed) {
       scrollOffset -= 5;
       platforms.forEach(function (platform) {
-        platform.position.x += 5;
+        platform.position.x += player.speed;
       });
       genericObjects.forEach(function (genericObject) {
-        genericObject.position.x += 3;
+        genericObject.position.x += player.speed * 0.66;
       });
     }
   }
@@ -373,6 +410,11 @@ function gameLoop() {
 
   if (scrollOffset > 2000) {
     console.log("Winner");
+  }
+
+  if (player.position.y > canvas.height) {
+    console.log("Loser");
+    init();
   } //update();
   //render();
 
