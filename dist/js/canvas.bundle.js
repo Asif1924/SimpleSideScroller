@@ -478,19 +478,19 @@ function gameLoop() {
   if (keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
     player.frames = 1;
     player.currentSprite = player.sprites.run.right;
-    player.currenCropWidth = player.sprites.run.cropWidth;
+    player.currentCropWidth = player.sprites.run.cropWidth;
     player.width = player.sprites.run.width;
   } else if (keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
     player.currentSprite = player.sprites.run.left;
-    player.currenCropWidth = player.sprites.run.cropWidth;
+    player.currentCropWidth = player.sprites.run.cropWidth;
     player.width = player.sprites.run.width;
   } else if (!keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
     player.currentSprite = player.sprites.stand.left;
-    player.currenCropWidth = player.sprites.stand.cropWidth;
+    player.currentCropWidth = player.sprites.stand.cropWidth;
     player.width = player.sprites.stand.width;
   } else if (!keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
     player.currentSprite = player.sprites.stand.right;
-    player.currenCropWidth = player.sprites.stand.cropWidth;
+    player.currentCropWidth = player.sprites.stand.cropWidth;
     player.width = player.sprites.stand.width;
   }
   if (scrollOffset > platformImage.width * 5 + 300 - 2) {
