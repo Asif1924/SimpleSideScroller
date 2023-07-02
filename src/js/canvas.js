@@ -60,29 +60,29 @@ class Player {
       }
     }
     this.currentSprite = this.sprites.stand.right;
-    this.currenCropWidth = 177;
+    this.currentCropWidth = 177;
   }
 
   draw() {
     canvasCtx.drawImage(
-      // this.currentSprite, 
-      // this.currentCropWidth * this.frames,
-      // 0,
-      // this.currentCropWidth,
-      // 400,
-      // this.position.x, 
-      // this.position.y,
-      // this.width,
-      // this.height
       this.currentSprite, 
+      this.currentCropWidth * this.frames,
       0,
-      0,
-      177,
+      this.currentCropWidth,
       400,
       this.position.x, 
       this.position.y,
       this.width,
-      this.height      
+      this.height
+      // this.currentSprite, 
+      // 177 * this.frames,
+      // 0,
+      // 177,
+      // 400,
+      // this.position.x, 
+      // this.position.y,
+      // this.width,
+      // this.height      
     );
 
   }
