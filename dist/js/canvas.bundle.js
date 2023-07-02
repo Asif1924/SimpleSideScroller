@@ -255,28 +255,8 @@ function createImage(imageSrc) {
 
 var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var player = new Player();
-var platforms = [new Platform({
-  x: -1,
-  y: 470,
-  image: platformImage
-}), new Platform({
-  x: platformImage.width - 3,
-  y: 470,
-  image: platformImage
-}), new Platform({
-  x: platformImage.width * 2 + 100,
-  y: 470,
-  image: platformImage
-})];
-var genericObjects = [new GenericObject({
-  x: -1,
-  y: -1,
-  image: createImage(_img_background_png__WEBPACK_IMPORTED_MODULE_2__["default"])
-}), new GenericObject({
-  x: -1,
-  y: -1,
-  image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
-})];
+var platforms = [];
+var genericObjects = [];
 var keys = {
   right: {
     pressed: false
@@ -326,46 +306,6 @@ function init() {
   };
 }
 
-addEventListener("keydown", function (_ref3) {
-  var keyCode = _ref3.keyCode;
-
-  switch (keyCode) {
-    case 37:
-      console.log("left");
-      keys.left.pressed = true;
-      break;
-
-    case 39:
-      console.log("right");
-      keys.right.pressed = true;
-      break;
-
-    case 32:
-      console.log("jump");
-      player.velocity.y -= 6;
-      break;
-  }
-});
-addEventListener("keyup", function (_ref4) {
-  var keyCode = _ref4.keyCode;
-
-  switch (keyCode) {
-    case 37:
-      console.log("left");
-      keys.left.pressed = false;
-      break;
-
-    case 39:
-      console.log("right");
-      keys.right.pressed = false;
-      break;
-
-    case 32:
-      console.log("jump");
-      player.velocity.y -= 6;
-      break;
-  }
-});
 var scrollOffset = 0; // Game loop function
 
 function gameLoop() {
@@ -425,6 +365,46 @@ function gameLoop() {
 
 init();
 gameLoop();
+addEventListener("keydown", function (_ref3) {
+  var keyCode = _ref3.keyCode;
+
+  switch (keyCode) {
+    case 37:
+      console.log("left");
+      keys.left.pressed = true;
+      break;
+
+    case 39:
+      console.log("right");
+      keys.right.pressed = true;
+      break;
+
+    case 32:
+      console.log("jump");
+      player.velocity.y -= 6;
+      break;
+  }
+});
+addEventListener("keyup", function (_ref4) {
+  var keyCode = _ref4.keyCode;
+
+  switch (keyCode) {
+    case 37:
+      console.log("left");
+      keys.left.pressed = false;
+      break;
+
+    case 39:
+      console.log("right");
+      keys.right.pressed = false;
+      break;
+
+    case 32:
+      console.log("jump");
+      player.velocity.y -= 6;
+      break;
+  }
+});
 
 /***/ })
 

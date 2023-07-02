@@ -84,37 +84,8 @@ function createImage(imageSrc) {
 
 let platformImage = createImage(platformImageSrc);
 let player = new Player();
-let platforms = [
-  new Platform({
-    x: -1,
-    y: 470,
-    image: platformImage,
-  }),
-  new Platform({
-    x: platformImage.width - 3,
-    y: 470,
-    image: platformImage,
-  }),
-  new Platform({
-    x: platformImage.width * 2 + 100,
-    y: 470,
-    image: platformImage,
-  }),
-];
-
-let genericObjects = [
-  new GenericObject({
-    x: -1,
-    y: -1,
-    image: createImage(background),
-  }),
-  new GenericObject({
-    x: -1,
-    y: -1,
-    image: createImage(hills),
-  }),
-];
-
+let platforms = [];
+let genericObjects = [];
 let keys = {
   right: {
     pressed: false,
@@ -173,40 +144,6 @@ function init() {
     },
   };
 }
-
-addEventListener("keydown", ({ keyCode }) => {
-  switch (keyCode) {
-    case 37:
-      console.log("left");
-      keys.left.pressed = true;
-      break;
-    case 39:
-      console.log("right");
-      keys.right.pressed = true;
-      break;
-    case 32:
-      console.log("jump");
-      player.velocity.y -= 6;
-      break;
-  }
-});
-
-addEventListener("keyup", ({ keyCode }) => {
-  switch (keyCode) {
-    case 37:
-      console.log("left");
-      keys.left.pressed = false;
-      break;
-    case 39:
-      console.log("right");
-      keys.right.pressed = false;
-      break;
-    case 32:
-      console.log("jump");
-      player.velocity.y -= 6;
-      break;
-  }
-});
 
 let scrollOffset = 0;
 // Game loop function
@@ -274,3 +211,37 @@ function gameLoop() {
 // Start the game loop
 init();
 gameLoop();
+
+addEventListener("keydown", ({ keyCode }) => {
+  switch (keyCode) {
+    case 37:
+      console.log("left");
+      keys.left.pressed = true;
+      break;
+    case 39:
+      console.log("right");
+      keys.right.pressed = true;
+      break;
+    case 32:
+      console.log("jump");
+      player.velocity.y -= 6;
+      break;
+  }
+});
+
+addEventListener("keyup", ({ keyCode }) => {
+  switch (keyCode) {
+    case 37:
+      console.log("left");
+      keys.left.pressed = false;
+      break;
+    case 39:
+      console.log("right");
+      keys.right.pressed = false;
+      break;
+    case 32:
+      console.log("jump");
+      player.velocity.y -= 6;
+      break;
+  }
+});
