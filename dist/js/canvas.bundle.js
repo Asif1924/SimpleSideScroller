@@ -238,12 +238,13 @@ var canvas = document.querySelector("canvas");
 var canvasCtx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
-var JUMPVELOCITY = 10;
+var JUMPVELOCITY = 15;
 var PLAYERSPEED = 5;
 var LEFTARROW = 37;
 var RIGHTARROW = 39;
 var SPACEBAR = 32;
 var BACKGROUND_HILLS_PARALLAX_FACTOR = 0.66;
+var hitSpaceCount = 0;
 
 // Define your game variables here
 function createImage(imageSrc) {
@@ -467,6 +468,7 @@ function gameLoop() {
   platforms.forEach(function (platform) {
     if (player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && player.position.x + player.width >= platform.position.x && player.position.x <= platform.position.x + platform.width) {
       player.velocity.y = 0;
+      hitSpaceCount = 0;
     }
   });
 
@@ -516,7 +518,8 @@ addEventListener("keydown", function (_ref3) {
       break;
     case SPACEBAR:
       console.log("jump");
-      player.velocity.y -= JUMPVELOCITY;
+      hitSpaceCount++;
+      if (hitSpaceCount == 1) player.velocity.y -= JUMPVELOCITY;
       break;
   }
 });

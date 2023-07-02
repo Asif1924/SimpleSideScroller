@@ -14,13 +14,14 @@ const canvasCtx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 
-const JUMPVELOCITY = 10;
+const JUMPVELOCITY = 15;
 const PLAYERSPEED = 5;
 const LEFTARROW = 37;
 const RIGHTARROW = 39;
 const SPACEBAR = 32;
 const BACKGROUND_HILLS_PARALLAX_FACTOR = 0.66;
 
+let hitSpaceCount = 0;
 
 // Define your game variables here
 function createImage(imageSrc) {
@@ -266,6 +267,7 @@ function gameLoop() {
       player.position.x <= platform.position.x + platform.width
     ) {
       player.velocity.y = 0;
+      hitSpaceCount=0;
     }
   });
 
@@ -317,8 +319,9 @@ addEventListener("keydown", ({ keyCode }) => {
       break;
     case SPACEBAR:
       console.log("jump");
-      
-      player.velocity.y -= JUMPVELOCITY;
+      hitSpaceCount++;
+      if(hitSpaceCount==1)
+        player.velocity.y -= JUMPVELOCITY;
       break;
   }
 });
