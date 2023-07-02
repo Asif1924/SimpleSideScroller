@@ -118,8 +118,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var canvas = document.querySelector("canvas");
 var canvasCtx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight; // Define your game variables here
+canvas.width = 1024;
+canvas.height = 576; // Define your game variables here
 // Player object
 
 var gravity = 0.5;
@@ -162,7 +162,8 @@ var Player = /*#__PURE__*/function () {
 var Platform = /*#__PURE__*/function () {
   function Platform(_ref) {
     var x = _ref.x,
-        y = _ref.y;
+        y = _ref.y,
+        image = _ref.image;
 
     _classCallCheck(this, Platform);
 
@@ -170,15 +171,21 @@ var Platform = /*#__PURE__*/function () {
       x: x,
       y: y
     };
-    this.width = 200;
-    this.height = 20;
+    this.image = image;
+    this.width = image.width;
+    this.height = image.height;
   }
 
   _createClass(Platform, [{
     key: "draw",
     value: function draw() {
-      canvasCtx.fillStyle = "blue";
-      canvasCtx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      // canvasCtx.fillStyle = "blue";
+      // canvasCtx.fillRect(
+      //   this.position.x,
+      //   this.position.y,
+      //   this.width,
+      //   this.height
+      canvasCtx.drawImage(this.image, this.position.x, this.position.y);
     }
   }]);
 
@@ -187,12 +194,16 @@ var Platform = /*#__PURE__*/function () {
 
 
 var playerImage = new Image();
+var image = new Image();
+image.src = _img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"];
 var platforms = [new Platform({
-  x: 200,
-  y: 100
+  x: -1,
+  y: 470,
+  image: image
 }), new Platform({
-  x: 500,
-  y: 200
+  x: image.width - 3,
+  y: 470,
+  image: image
 })];
 playerImage.src = "mario-right.jpeg"; // Replace "player.png" with your image file
 
@@ -251,11 +262,12 @@ var scrollOffset = 0; // Game loop function
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
-  canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-  player.update();
+  canvasCtx.fillStyle = 'white';
+  canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
   platforms.forEach(function (platform) {
     platform.draw();
   });
+  player.update();
 
   if (keys.right.pressed && player.position.x < 400) {
     player.velocity.x = 5;

@@ -2,8 +2,8 @@ import platform from '../img/platform.png';
 
 const canvas = document.querySelector("canvas");
 const canvasCtx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight; 
+canvas.width = 1024;
+canvas.height = 576; 
 
 // Define your game variables here
 
@@ -45,30 +45,34 @@ class Player {
 }
 
 class Platform {
-  constructor({ x, y }) {
+  constructor({ x, y, image }) {
     this.position = {
       x,
       y,
     };
-    this.width = 200;
-    this.height = 20;
+    this.image = image;
+    this.width = image.width;
+    this.height = image.height;
+    
   }
-  draw() {
-    canvasCtx.fillStyle = "blue";
-    canvasCtx.fillRect(
-      this.position.x,
-      this.position.y,
-      this.width,
-      this.height
-    );
+  draw() { 
+    // canvasCtx.fillStyle = "blue";
+    // canvasCtx.fillRect(
+    //   this.position.x,
+    //   this.position.y,
+    //   this.width,
+    //   this.height
+    canvasCtx.drawImage(this.image,this.position.x,this.position.y);
   }
 }
 // Load player image
 const playerImage = new Image();
+const image = new Image();
+image.src = platform;
 
 const platforms = [
-  new Platform({ x: 200, y: 100 }),
-  new Platform({ x: 500, y: 200 }),
+  new Platform({ x: -1, y: 470, image}),
+  new Platform({ x: image.width-3, y: 470, image }),
 ];
 playerImage.src = "mario-right.jpeg"; // Replace "player.png" with your image file
 
@@ -123,11 +127,13 @@ let scrollOffset = 0;
 // Game loop function
 function gameLoop() {
   requestAnimationFrame(gameLoop);
-  canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-  player.update();
+  canvasCtx.fillStyle='white';
+  canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+  
   platforms.forEach((platform) => {
     platform.draw();
   });
+  player.update();  
 
   if (keys.right.pressed && player.position.x < 400) {
     player.velocity.x = 5;
