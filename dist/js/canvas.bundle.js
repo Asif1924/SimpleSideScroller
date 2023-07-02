@@ -240,6 +240,10 @@ canvas.width = 1024;
 canvas.height = 576;
 var JUMPVELOCITY = 10;
 var PLAYERSPEED = 5;
+var LEFTARROW = 37;
+var RIGHTARROW = 39;
+var SPACEBAR = 32;
+var BACKGROUND_HILLS_PARALLAX_FACTOR = 0.66;
 
 // Define your game variables here
 function createImage(imageSrc) {
@@ -291,17 +295,7 @@ var Player = /*#__PURE__*/function () {
   _createClass(Player, [{
     key: "draw",
     value: function draw() {
-      canvasCtx.drawImage(this.currentSprite, this.currentCropWidth * this.frames, 0, this.currentCropWidth, 400, this.position.x, this.position.y, this.width, this.height
-      // this.currentSprite, 
-      // 177 * this.frames,
-      // 0,
-      // 177,
-      // 400,
-      // this.position.x, 
-      // this.position.y,
-      // this.width,
-      // this.height      
-      );
+      canvasCtx.drawImage(this.currentSprite, this.currentCropWidth * this.frames, 0, this.currentCropWidth, 400, this.position.x, this.position.y, this.width, this.height);
     }
   }, {
     key: "update",
@@ -458,7 +452,7 @@ function gameLoop() {
         platform.position.x -= player.speed;
       });
       genericObjects.forEach(function (genericObject) {
-        genericObject.position.x -= player.speed * 0.66;
+        genericObject.position.x -= player.speed * BACKGROUND_HILLS_PARALLAX_FACTOR;
       });
     } else if (keys.left.pressed && scrollOffset > 0) {
       scrollOffset -= player.speed;
@@ -466,7 +460,7 @@ function gameLoop() {
         platform.position.x += player.speed;
       });
       genericObjects.forEach(function (genericObject) {
-        genericObject.position.x += player.speed * 0.66;
+        genericObject.position.x += player.speed * BACKGROUND_HILLS_PARALLAX_FACTOR;
       });
     }
   }
@@ -510,17 +504,17 @@ gameLoop();
 addEventListener("keydown", function (_ref3) {
   var keyCode = _ref3.keyCode;
   switch (keyCode) {
-    case 37:
+    case LEFTARROW:
       console.log("left");
       keys.left.pressed = true;
       lastKey = 'left';
       break;
-    case 39:
+    case RIGHTARROW:
       console.log("right");
       keys.right.pressed = true;
       lastKey = 'right';
       break;
-    case 32:
+    case SPACEBAR:
       console.log("jump");
       player.velocity.y -= JUMPVELOCITY;
       break;
@@ -529,15 +523,15 @@ addEventListener("keydown", function (_ref3) {
 addEventListener("keyup", function (_ref4) {
   var keyCode = _ref4.keyCode;
   switch (keyCode) {
-    case 37:
+    case LEFTARROW:
       console.log("left");
       keys.left.pressed = false;
       break;
-    case 39:
+    case RIGHTARROW:
       console.log("right");
       keys.right.pressed = false;
       break;
-    case 32:
+    case SPACEBAR:
       console.log("jump");
       break;
   }

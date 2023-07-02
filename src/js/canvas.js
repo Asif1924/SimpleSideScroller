@@ -16,6 +16,10 @@ canvas.height = 576;
 
 const JUMPVELOCITY = 10;
 const PLAYERSPEED = 5;
+const LEFTARROW = 37;
+const RIGHTARROW = 39;
+const SPACEBAR = 32;
+const BACKGROUND_HILLS_PARALLAX_FACTOR = 0.66;
 
 
 // Define your game variables here
@@ -77,16 +81,7 @@ class Player {
       this.position.x, 
       this.position.y,
       this.width,
-      this.height
-      // this.currentSprite, 
-      // 177 * this.frames,
-      // 0,
-      // 177,
-      // 400,
-      // this.position.x, 
-      // this.position.y,
-      // this.width,
-      // this.height      
+      this.height     
     );
 
   }
@@ -249,7 +244,7 @@ function gameLoop() {
         platform.position.x -= player.speed;
       });
       genericObjects.forEach((genericObject) => {
-        genericObject.position.x -= player.speed * 0.66;
+        genericObject.position.x -= player.speed * BACKGROUND_HILLS_PARALLAX_FACTOR;
       });
     } else if (keys.left.pressed && scrollOffset>0) {
       scrollOffset -= player.speed;
@@ -257,7 +252,7 @@ function gameLoop() {
         platform.position.x += player.speed;
       });
       genericObjects.forEach((genericObject) => {
-        genericObject.position.x += player.speed * 0.66;
+        genericObject.position.x += player.speed * BACKGROUND_HILLS_PARALLAX_FACTOR;
       });
     }
   }
@@ -310,18 +305,19 @@ gameLoop();
 
 addEventListener("keydown", ({ keyCode }) => {
   switch (keyCode) {
-    case 37:
+    case LEFTARROW:
       console.log("left");
       keys.left.pressed = true;
       lastKey='left';
       break;
-    case 39:
+    case RIGHTARROW:
       console.log("right");
       keys.right.pressed = true;
       lastKey = 'right';
       break;
-    case 32:
+    case SPACEBAR:
       console.log("jump");
+      
       player.velocity.y -= JUMPVELOCITY;
       break;
   }
@@ -329,15 +325,15 @@ addEventListener("keydown", ({ keyCode }) => {
 
 addEventListener("keyup", ({ keyCode }) => {
   switch (keyCode) {
-    case 37:
+    case LEFTARROW:
       console.log("left");
       keys.left.pressed = false;
       break;
-    case 39:
+    case RIGHTARROW:
       console.log("right");
       keys.right.pressed = false;     
       break;
-    case 32:
+    case SPACEBAR:
       console.log("jump");      
       break;
   }
