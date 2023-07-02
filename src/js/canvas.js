@@ -1,4 +1,6 @@
 import platform from '../img/platform.png';
+import hills from '../img/hills.png';
+import background from '../img/background.png';
 
 const canvas = document.querySelector("canvas");
 const canvasCtx = canvas.getContext("2d");
@@ -65,16 +67,50 @@ class Platform {
     canvasCtx.drawImage(this.image,this.position.x,this.position.y);
   }
 }
+
+class GenericObject {
+  constructor({ x, y, image }) {
+    this.position = {
+      x,
+      y,
+    };
+    this.image = image;
+    this.width = image.width;
+    this.height = image.height;
+    
+  }
+  draw() { 
+    // canvasCtx.fillStyle = "blue";
+    // canvasCtx.fillRect(
+    //   this.position.x,
+    //   this.position.y,
+    //   this.width,
+    //   this.height
+    canvasCtx.drawImage(this.image,this.position.x,this.position.y);
+  }
+}
+
+function createImage( imageSrc){
+  const image = new Image();
+  image.src = imageSrc;
+  return image;  
+}
+
+const platformImage = createImage(platform);
 // Load player image
-const playerImage = new Image();
-const image = new Image();
-image.src = platform;
 
 const platforms = [
-  new Platform({ x: -1, y: 470, image}),
-  new Platform({ x: image.width-3, y: 470, image }),
+  new Platform({ x: -1, y: 470, image:platformImage}),
+  new Platform({ x: platformImage.width-3, y: 470, image:platformImage }),
+  new Platform({ x: platformImage.width * 2 -3, y: 470, image:platformImage })
 ];
-playerImage.src = "mario-right.jpeg"; // Replace "player.png" with your image file
+
+const genericObjects = [
+  new GenericObject({x:-1,y:-1,image:createImage(background)}),
+  new GenericObject({x:-1,y:-1,image:createImage(hills)})
+];
+
+//playerImage.src = "mario-right.jpeg"; // Replace "player.png" with your image file
 
 const player = new Player();
 //player.draw();
@@ -129,7 +165,11 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
   canvasCtx.fillStyle='white';
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-  
+ 
+  genericObjects.forEach((genericObject)=>{
+    genericObject.draw();
+  })
+
   platforms.forEach((platform) => {
     platform.draw();
   });
@@ -146,11 +186,17 @@ function gameLoop() {
       platforms.forEach((platform) => {
         platform.position.x -= 5;
       });
+      genericObjects.forEach((genericObject)=>{
+        genericObject.position.x-=3;
+      })
     } else if (keys.left.pressed) {
       scrollOffset -= 5;
       platforms.forEach((platform) => {
         platform.position.x += 5;
       });
+      genericObjects.forEach((genericObject)=>{
+        genericObject.position.x+=3;
+      })      
     }
   }
 
@@ -171,54 +217,6 @@ function gameLoop() {
   }
   //update();
   //render();
-}
-
-// Update game state
-function update() {
-  // Update player position based on keyboard input
-  if (keys[37]) {
-    // Left arrow key
-    Player.velocityX = -Player.speed;
-  } else if (keys[39]) {
-    // Right arrow key
-    Player.velocityX = Player.speed;
-  } else {
-    Player.velocityX = 0;
-  }
-
-  // Jumping logic
-  if (keys[32] && Player.grounded) {
-    // Up arrow key
-    Player.velocityY = -Player.speed * 2;
-    Player.jumping = true;
-    Player.grounded = false;
-  }
-
-  // Apply gravity to player
-  Player.velocityY += 1.5;
-  Player.x += Player.velocityX;
-  Player.y += Player.velocityY;
-
-  // Collision detection with ground (assuming ground level at canvas height)
-  if (Player.y > canvas.height - Player.height) {
-    Player.y = canvas.height - Player.height;
-    Player.velocityY = 0;
-    Player.jumping = false;
-    Player.grounded = true;
-  }
-}
-
-// Render game objects on the canvas
-function render() {
-  // Clear the canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Render player on the canvas
-  //   ctx.fillStyle = "red";
-  //   ctx.fillRect(player.x, player.y, player.width, player.height);
-
-  // Render player image on the canvas
-  ctx.drawImage(playerImage, Player.x, Player.y, Player.width, Player.height);
 }
 
 // Start the game loop
