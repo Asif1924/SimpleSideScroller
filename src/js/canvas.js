@@ -1,4 +1,5 @@
 import platformImageSrc from "../img/platform.png";
+import platformImageSmallTallSrc from "../img/platformSmallTall.png";
 import hills from "../img/hills.png";
 import background from "../img/background.png";
 
@@ -83,9 +84,11 @@ function createImage(imageSrc) {
 }
 
 let platformImage = createImage(platformImageSrc);
+let platformImageSmallTall = createImage(platformImageSmallTallSrc);
 let player = new Player();
 let platforms = [];
 let genericObjects = [];
+
 let keys = {
   right: {
     pressed: false,
@@ -99,9 +102,15 @@ let scrollOffset = 0;
 
 function init() {
   platformImage = createImage(platformImageSrc);
+  platformImageSmallTall = createImage(platformImageSmallTallSrc);
   // Load player image
   player = new Player();
   platforms = [
+    new Platform({
+      x: (platformImage.width * 4) + 300 -2 + platformImage.width - platformImageSmallTall.width,
+      y: 270,
+      image: platformImageSmallTall,
+    }),    
     new Platform({
       x: -1,
       y: 470,
@@ -123,11 +132,15 @@ function init() {
       image: platformImage,
     }),
     new Platform({
-      x: (platformImage.width * 4) + 600,
+      x: (platformImage.width * 4) + 300 -2,
       y: 470,
       image: platformImage,
     }),
-
+    new Platform({
+      x: (platformImage.width * 5) + 700 -2,
+      y: 470,
+      image: platformImage,
+    })
   ];
 
   genericObjects = [
@@ -184,7 +197,7 @@ function gameLoop() {
         genericObject.position.x -= player.speed * 0.66;
       });
     } else if (keys.left.pressed) {
-      scrollOffset -= 5;
+      scrollOffset -= player.speed;
       platforms.forEach((platform) => {
         platform.position.x += player.speed;
       });
@@ -206,7 +219,7 @@ function gameLoop() {
     }
   });
 
-  if (scrollOffset > 2000) {
+  if (scrollOffset > platformImage.width * 5 + 300 -2) {
     console.log("Winner");
   }
 
@@ -232,7 +245,7 @@ addEventListener("keydown", ({ keyCode }) => {
       break;
     case 32:
       console.log("jump");
-      player.velocity.y -= 10;
+      player.velocity.y -= 15;
       break;
   }
 });
