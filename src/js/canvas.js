@@ -2,6 +2,12 @@ import platformImageSrc from "../img/platform.png";
 import platformImageSmallTallSrc from "../img/platformSmallTall.png";
 import hills from "../img/hills.png";
 import background from "../img/background.png";
+import spriteRunLeft from "../img/spriteRunLeft.png";
+import spriteRunRight from "../img/spriteRunRight.png";
+import spriteStandLeft from "../img/spriteStandLeft.png";
+import spriteStandRight from "../img/spriteStandRight.png";
+
+
 
 const canvas = document.querySelector("canvas");
 const canvasCtx = canvas.getContext("2d");
